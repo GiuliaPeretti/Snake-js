@@ -16,9 +16,9 @@ const velocity=125
 let running = false;
 let xVelocity = uniSize;
 let yVelocity =  0;
-let foods= []
+let foods = []
 let foodQuantity=5;
-let foodValids = [];
+let notValid = [];
 let score = 0;
 let snake = [
     {x:uniSize*5,y:uniSize*9},
@@ -38,7 +38,7 @@ startButton.addEventListener("click", gameStart);
 
 clearBoard();
 drawSnake();
-updateFoodValids();
+
 
 
 function gameStart(){
@@ -102,19 +102,16 @@ function createFood(){
         let valid;
         let x;
         let y;
+        
         do {
-            valid=true;
             x = randomFood(0, gameWidth - uniSize);
             y = randomFood(0, gameWidth - uniSize);
-            for(let i = 0; i<foodValids.length; i++){
-                if (foodValids[i][0]==y && foodValids[i][1]==x){
-                    valid=false;
-                    break;
-                }
-            }
+            valid = checkIfValidFood(x,y);
         }while(!valid);
         foods.push({x:randomFood(0, gameWidth - uniSize), y:randomFood(0, gameWidth - uniSize)})
     }
+
+    console.log(foods)
     //foodX=randomFood(0, gameWidth - uniSize);
     //foodY=randomFood(0, gameWidth - uniSize);
 };
@@ -132,7 +129,6 @@ function drawFood(){
 };
 function moveSnake(){
     const head = {x: snake[0].x + xVelocity, y: snake[0].y + yVelocity}
-    removeFromFoodValids(head.x, head.y)
 
     snake.unshift(head);
     checkGameOver();
@@ -141,11 +137,10 @@ function moveSnake(){
         return;
     }
     //if food is eaten
-    let h = {x: snake[0].x, y: snake[0].y}
 
     let found=false
 
-    for(let i=0; i<foodQuantity; i++){
+    for(let i=0; i<foods.length; i++){
         if (foods[i].x == snake[0].x && foods[i].y == snake[0].y){
             found=true;
             score+=1
@@ -156,7 +151,6 @@ function moveSnake(){
         }
     }
     if (!found){
-        addFromFoodValids(snake[snake.length-1].x, snake[snake.length-1].y)
         snake.pop()
     }
 
@@ -266,7 +260,9 @@ function displayGameOver(){
     ctx.textAlign = "center";
     ctx.fillText("GAME OVER", gameWidth / 2, gameHeight /2);
     running = false;
-};
+}
+
+
 function resetGame(){
     score = 0;
     xVelocity = uniSize;
@@ -278,45 +274,28 @@ function resetGame(){
         {x:uniSize*2,y:uniSize*9},
         {x:uniSize*1,y:uniSize*9}
     ]
-    foods=[]
+    foods=[];
     gameStart();
-};
-
-function updateFoodValids(){
-    for(let i =0; i<gameWidth/uniSize; i++){
-        for(let j = 0; j<gameHeight/uniSize; j++){
-            foodValids.push([i,j])
-        }
-    }
-
-    for(let i=0; i<snake.length; i++){
-        let index = -1;
-        for(let j=0;j<foodValids.length;j++){
-            if (foodValids[j][0]==snake[i].y/uniSize && foodValids[j][1]==snake[i].x/uniSize){
-                index=j
-                break;
-            }
-        }
-        if (index!=-1){
-            foodValids.splice(index, 1);
-        }
-    }
 }
 
-function removeFromFoodValids(x,y){
-    let index = -1
-    for(let j=0;j<foodValids.length;j++){
-        if (foodValids[j][0]==y && foodValids[j][1]==x){
-            index=j
-            break;
+function checkIfValidFood(x,y){
+    for(let i=0; i<notValid.length;i++){
+        if(notValid[i][0] == y && notValid[i][0] == x){
+            notValid.push([y,x]);
+            return false;
         }
     }
-    if (index!=-1){
-        foodValids.splice(index, 1);
+    for(let i=0; i<snake.length;i++){
+        if(snake[i].y == y && snake[i].x== x){
+            notValid.push([y,x]);
+            return false;
+        }
     }
+    for(let i=0; i<foods.length;i++){
+        if(foods[i].y == y && foods[i].x== x){
+            notValid.push([y,x]);
+            return false;
+        }
+    }
+    return true;
 }
-
-function addFromFoodValids(x,y){
-    foodValids.push([y,x])
-}
-
