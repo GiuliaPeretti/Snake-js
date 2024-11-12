@@ -1,0 +1,38 @@
+body{
+    background-color: #f7f9db;
+}
+
+#gameContainer{
+    text-align: center;
+
+} 
+
+#gameCanvas{
+    border: 3px solid;
+    color: #6ca16c;
+    background-color:  #dbf9db ;
+}
+
+#score{
+    font-family: "Permanent Marker", cursive;
+    font-size: 100px;
+    color: #457979;
+}
+
+#startButton{
+    font-family: "Permanent Marker", cursive;
+    font-size: 22px;
+    width: 100px;
+    height: 50px;
+    border: 3px solid;
+    border-color: #6fa7a7;
+    background-color: #dbf9f9;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+
+#checkboxColors  {
+    display:inline-block;
+    margin-left:10px;
+} 
