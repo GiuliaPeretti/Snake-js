@@ -9,9 +9,59 @@
         <div id="gameContainer">
             <canvas id="gameCanvas" width="500" height="500"></canvas>
             <div id="score">0</div>
-            <button id="startButton">Start</button>
+            <table>
+                <th>            
+                    <button id="startButton">Start</button>
+                    <button id="settingsButton">Settings</button>
+                </th>
+            </table>
+
         </div>
         <script src="index.js"></script>
+       <div id="Settings">
+         
+        <div id="dropDownFood">
+            <label for="selectFood">Choose the food foodQuantity</label>
 
+            <select name="selectFood" id="selectFood">
+              <option value="1food">1</option>
+              <option value="2food">2</option>
+              <option value="3food">3</option>
+              <option value="4food">4</option>
+              <option value="5food">5</option>
+            </select> 
+        </div>
+        <div id="dropDownColor">
+            <label for="color">Choose the color</label>
+
+            <select name="color" id="color">
+              <option value="1color">1</option>
+              <option value="2color">2</option>
+              <option value="3color">3</option>
+              <option value="4color">4</option>
+              <option value="5color">5</option>
+            </select> 
+        </div>
+
+        <div id="dropDownDifficulty">
+            <label for="difficulty">Choose the difficulty</label>
+
+            <select name="difficulty" id="difficulty">
+              <option value="easy">easy</option>
+              <option value="medium">medium</option>
+              <option value="hard">hard</option>
+            </select> 
+        </div>
+
+        <div id="dropDownVelocity">
+            <label for="velocity">Choose the difficulty</label>
+
+            <select name="velocity" id="velocity">
+              <option value="slow">easy</option>
+              <option value="medium">medium</option>
+              <option value="fast">hard</option>
+            </select> 
+        </div>
+       </div>
     </body>
 </html>

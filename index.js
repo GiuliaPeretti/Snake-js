@@ -2,16 +2,21 @@ const gameCanvas = document.querySelector("#gameCanvas");
 const ctx = gameCanvas.getContext("2d");
 const scoreText = document.querySelector("#score");
 const startButton = document.querySelector("#startButton");
+
+// var c = document.getElementById("color");
+
 const gameWidth = gameCanvas.width;
 const gameHeight = gameCanvas.height;
 const canvasBackground1 = "#dbf9db";
 const canvasBackground2 = "#cce8cc";
 const snakeColor="#f7c9fc";
 const headColor="#b6b6f9"
-const snakeColors=["#ccccff","#d9ccff","#e6ccff","#f2ccff", "#ffccff" ,"#f2ccff","#e6ccff","#d9ccff","#ccccff"]
+const snakeColors1=["#ccccff","#d9ccff","#e6ccff","#f2ccff", "#ffccff" ,"#f2ccff","#e6ccff","#d9ccff","#ccccff"]
+const snakeColors2=["#e89b94","#f9c693","#f9ea93","#d6f993","#b3f2d8","#b3cef2","#d4b3f2","#f2b3ea"]
+let snakeColors=[];
 const snakeBorder="#d08ad8";
 const foodColor="#db304f";
-const uniSize=50;
+let uniSize=50;
 const velocity=125
 let running = false;
 let xVelocity = uniSize;
@@ -20,18 +25,16 @@ let foods = []
 let foodQuantity=5;
 let notValid = [];
 let score = 0;
-let snake = [
-    {x:uniSize*5,y:uniSize*9},
-    {x:uniSize*4,y:uniSize*9},
-    {x:uniSize*3,y:uniSize*9},
-    {x:uniSize*2,y:uniSize*9},
-    {x:uniSize*1,y:uniSize*9}
-]
+let snake = []
 
-//TODO: quando restarti il serpente non funziona
-//TODO: quando la perdi la testa del serpente si colora sbagliata   
-//TODO: controllo che le male non spawnino sotto il serpente o sotto unaltra mela
-//TODO: invece di usare la lista di valids, quando cercchi se uno e valido se non e valido lo metti in una lista e poi controlli li 
+//TODO: quando la perdi la testa del serpente se tonda meglio
+//TODO: serpente se piu snello meglio 
+//TODO: fai pop up per impostazioni, oppure metti in row dei dropdown menu con la casella grande
+//TDOD: rendere modificabile grandezza quadratini, mele alla volta, colore serpente 
+//TODO: mi pare che la frutta la prima volta si generi anche sotto il serpente, il resto del tempo no
+//TODO: vedi se riesci a mettere la mela
+
+
 
 window.addEventListener("keydown", changeDirection);
 startButton.addEventListener("click", gameStart);
@@ -45,6 +48,10 @@ function gameStart(){
     running = true;
     scoreText.textContent = score;
     clearBoard();
+    firstSnake();
+    pickDifficuly();
+    pickColorSnake();
+    pickFoodQuantity();
     drawSnake();
     createFood();
     drawFood();
@@ -111,10 +118,10 @@ function createFood(){
         foods.push({x:randomFood(0, gameWidth - uniSize), y:randomFood(0, gameWidth - uniSize)})
     }
 
-    console.log(foods)
     //foodX=randomFood(0, gameWidth - uniSize);
     //foodY=randomFood(0, gameWidth - uniSize);
 };
+
 function drawFood(){
     ctx.fillStyle = foodColor;
     foods.forEach((food) => ctx.fillRect(food.x,food.y,uniSize,uniSize))
@@ -126,7 +133,8 @@ function drawFood(){
     // img.height = 25;
 
     // show_image("apple.jpg",300, 200,"gfg logo");
-};
+}
+
 function moveSnake(){
     const head = {x: snake[0].x + xVelocity, y: snake[0].y + yVelocity}
 
@@ -173,7 +181,7 @@ function drawSnake(){
             ctx.fillStyle=snakeColors[i%9];
         }
         ctx.fillRect(snake[i].x, snake[i].y, uniSize, uniSize)
-        ctx.strokeRect(snake[i].x, snake[i].y, uniSize, uniSize)
+        //ctx.strokeRect(snake[i].x, snake[i].y, uniSize, uniSize)
     }
     /*
     snake.forEach(snakePart => {
@@ -298,4 +306,55 @@ function checkIfValidFood(x,y){
         }
     }
     return true;
+}
+
+
+function pickColorSnake(){
+    var c = document.getElementById("color");
+    var value = c.value;
+    var colorChoice = c.options[c.selectedIndex].text;
+    switch(colorChoice){
+        case("1"):
+            snakeColors=snakeColors1
+            break;
+        default:
+            snakeColors=snakeColors2
+    }
+}
+
+function pickFoodQuantity(){
+    var f = document.getElementById("selectFood");
+    var value = f.value;
+    foodQuantity = f.options[f.selectedIndex].text;
+}
+
+function firstSnake(){
+    snake = []
+
+    for(let i=5; i>0; i--){
+        snake.push({x:uniSize*i, y:uniSize*(Math.floor(gameWidth/uniSize/2))})
+    }
+
+    console.log(gameWidth/uniSize/2)
+    console.log(snake)
+}
+
+function pickDifficuly(){
+    var d = document.getElementById("difficulty");
+    var difficulty = d.options[d.selectedIndex].text;
+    switch(difficulty){
+        case("easy"):
+            uniSize=50;
+            break;
+        case("medium"):
+            uniSize=25;
+            break;
+        case("hard"):
+            uniSize=10;
+            break;
+    }
+}
+
+function showSettings(){
+    document.getElementById("Settings").style.display = "block"; 
 }
