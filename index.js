@@ -2,9 +2,6 @@ const gameCanvas = document.querySelector("#gameCanvas");
 const ctx = gameCanvas.getContext("2d");
 const scoreText = document.querySelector("#score");
 const startButton = document.querySelector("#startButton");
-
-// var c = document.getElementById("color");
-
 const gameWidth = gameCanvas.width;
 const gameHeight = gameCanvas.height;
 const canvasBackground1 = "#dbf9db";
@@ -26,13 +23,6 @@ let foodQuantity=5;
 let notValid = [];
 let score = 0;
 let snake = []
-
-//TODO: quando la perdi la testa del serpente se tonda meglio
-//TODO: serpente se piu snello meglio 
-//TODO: fai pop up per impostazioni, oppure metti in row dei dropdown menu con la casella grande
-//TDOD: rendere modificabile grandezza quadratini, mele alla volta, colore serpente 
-//TODO: mi pare che la frutta la prima volta si generi anche sotto il serpente, il resto del tempo no
-//TODO: vedi se riesci a mettere la mela
 
 
 
@@ -71,11 +61,6 @@ function nextTick(){
     }
 };
 function clearBoard(){
-    // ctx.fillStyle=canvasBackground1;
-    // ctx.fillRect(0,0,gameWidth,gameHeight);
-
-
-    //TODO: questo e il problema
 
     for(let i=0; i<gameWidth/uniSize; i++){
         for(let j=0; j<gameHeight/uniSize; j++){
@@ -104,7 +89,6 @@ function createFood(){
         return randNum;
     }
 
-    //non funzioa
     while(foods.length<foodQuantity){
         let valid;
         let x;
@@ -117,22 +101,11 @@ function createFood(){
         }while(!valid);
         foods.push({x:randomFood(0, gameWidth - uniSize), y:randomFood(0, gameWidth - uniSize)})
     }
-
-    //foodX=randomFood(0, gameWidth - uniSize);
-    //foodY=randomFood(0, gameWidth - uniSize);
 };
 
 function drawFood(){
     ctx.fillStyle = foodColor;
     foods.forEach((food) => ctx.fillRect(food.x,food.y,uniSize,uniSize))
-    //ctx.fillRect(foodX,foodY,uniSize,uniSize);
-
-    // let img = document.createElement("img");
-    // img.src = "apple.jpg";
-    // img.width = 25;
-    // img.height = 25;
-
-    // show_image("apple.jpg",300, 200,"gfg logo");
 }
 
 function moveSnake(){
@@ -144,7 +117,6 @@ function moveSnake(){
         snake.shift();
         return;
     }
-    //if food is eaten
 
     let found=false
 
@@ -162,18 +134,11 @@ function moveSnake(){
         snake.pop()
     }
 
-    // if(foods.includes(h)){
-    //     score+=1
-    //     scoreText.textContent = score;
-    //     createFood();
-    // }else{
-    //     snake.pop();
-        
-    // }
 };
+
+
 function drawSnake(){
     ctx.fillStyle=snakeColor;
-    //ctx.strokeStyle=snakeBorder;
     for(let i = 0; i<snake.length;i++){
         if (i==0){
             ctx.fillStyle=headColor;
@@ -181,21 +146,14 @@ function drawSnake(){
             ctx.fillStyle=snakeColors[i%9];
         }
         ctx.fillRect(snake[i].x, snake[i].y, uniSize, uniSize)
-        //ctx.strokeRect(snake[i].x, snake[i].y, uniSize, uniSize)
     }
-    /*
-    snake.forEach(snakePart => {
-        ctx.fillRect(snakePart.x, snakePart.y, uniSize, uniSize)
-        ctx.strokeRect(snakePart.x, snakePart.y, uniSize, uniSize)
-
-    })
-        */
 };
+
+
 function changeDirection(event){
     if (running==false){
         resetGame();
         return;
-        //TODO: quando inizia va solo a destra, vedi se togliere return
     }
     const keyPresssed = event.keyCode;
     const LEFT = 37;
